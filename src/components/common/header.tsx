@@ -1,11 +1,22 @@
+'use client'
 import { FileText } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
 import NavLink from './nav-link'
+import {
+  SignedIn,
+  SignedOut,
+  SignIn,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useUser,
+} from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs/server'
 
 export default function Header() {
-  const isLoggedIn = true
+  const { isSignedIn } = useUser()
   return (
     <nav className="container flex items-center justify-between py-4 lg:px-8 px-2 mx-auto">
       <div className="flex lg:flex-1">
@@ -18,18 +29,25 @@ export default function Header() {
       </div>
       <div>
         <NavLink href="/#price">Pris</NavLink>
-        {isLoggedIn && <Link href="/#dashboard">dashboard</Link>}
       </div>
       <div className="flex lg:justify-end lg:flex-1">
-        {isLoggedIn ? (
+        {isSignedIn ? (
           <div className="flex gap-2 items-center">
             <NavLink href="/upload">Ladda upp PDF</NavLink>
             <div>Pro</div>
-            <Button>user</Button>
+            {isSignedIn && <Link href="/dashboard">dashboard</Link>}
+
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
           </div>
         ) : (
           <div>
-            <NavLink href="/sign-in">Logga In</NavLink>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <Button>Logga in</Button>
+              </SignInButton>
+            </SignedOut>
           </div>
         )}
       </div>

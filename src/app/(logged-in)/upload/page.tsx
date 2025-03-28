@@ -1,11 +1,17 @@
 import BgGradient from '@/components/common/bg-gradient'
 import { Badge } from '@/components/ui/badge'
 import UploadForm from '@/components/upload/upload-form'
+import { getCurrentUser } from '@/lib/user'
 import { UploadButton, UploadDropzone } from '@/utils/uploadthing'
 import { Sparkles } from 'lucide-react'
+import { redirect } from 'next/navigation'
 import React from 'react'
 
-export default function Upload() {
+export default async function Upload() {
+  const user = await getCurrentUser()
+  if (!user) {
+    redirect('/')
+  }
   return (
     <section className="min-h-screen">
       <BgGradient />

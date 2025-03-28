@@ -12,3 +12,51 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       String    @id @default(uuid())
+  clerkId  String    @unique // ← Clerk-användarens ID
+  email    String    @unique
+  pdfFiles PdfFile[]
+}
+
+model PdfFile {
+  id        String           @id @default(uuid())
+  userId    String
+  name      String // Filnamn
+  url       String // UploadThing URL
+  createdAt DateTime         @default(now())
+  chunks    PdfChunk[]
+  summary   PdfSummary?
+  messages  PdfChatMessage[]
+
+  user User @relation(fields: [userId], references: [clerkId])
+}
+
+model PdfChunk {
+  id        String   @id @default(uuid())
+  pdfId     String
+  content   String // Chunk-innehåll
+  createdAt DateTime @default(now())
+
+  pdf PdfFile @relation(fields: [pdfId], references: [id])
+}
+
+model PdfSummary {
+  id      String @id @default(uuid())
+  pdfId   String @unique
+  summary String
+
+  pdf PdfFile @relation(fields: [pdfId], references: [id])
+}
+
+model PdfChatMessage {
+  id        String   @id @default(uuid())
+  pdfId     String
+  userId    String
+  role      String // 'user' eller 'assistant'
+  content   String
+  createdAt DateTime @default(now())
+
+  pdf PdfFile @relation(fields: [pdfId], references: [id])
+}
