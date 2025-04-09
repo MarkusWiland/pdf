@@ -36,7 +36,7 @@ export default function SummaryHeader({
             {readingTime} läsningstid
           </div>
         </div>
-        {title}
+        <h1> {title}</h1>
       </div>
       <div>
         <Link href="/dashboard">

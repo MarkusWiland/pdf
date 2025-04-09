@@ -92,19 +92,19 @@ export default function ChatBox({
       setIsLoading(false)
     }
   }
-
+  const isPro = false
   return (
-    <section className="container grid grid-cols-2 gap-4">
-      <div className="">
-        {pdfUrl && (
-          <embed
-            className="w-full h-[50vh] max-w-screen-xl mx-auto rounded-lg shadow"
-            src={pdfUrl}
-            id="pdf"
-          />
+    <section className="container grid grid-cols-2 gap-4 relative">
+      <div className="w-full flex-1 mx-auto col-span-2 relative">
+        {!isPro && (
+          <div className="absolute inset-0 bg-white/40 backdrop-blur-md z-10 flex flex-col items-center justify-center rounded-md border border-dashed border-rose-300">
+            <div className="text-4xl text-rose-500 mb-2">🚫</div>
+            <p className="text-center text-muted-foreground font-medium">
+              Endast tillgängligt för PRO-användare
+            </p>
+          </div>
         )}
-      </div>
-      <div className="w-full flex-1 mx-auto col-span-2">
+
         <div
           ref={chatRef}
           className="border h-96 overflow-y-auto p-4 rounded-md bg-white mb-4"
@@ -126,6 +126,7 @@ export default function ChatBox({
 
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Input
+            disabled={!isPro}
             className="flex-1 border px-3 py-2 rounded-md text-sm"
             placeholder="Ställ en fråga om PDF:en..."
             value={input}
@@ -133,8 +134,8 @@ export default function ChatBox({
           />
           <Button
             type="submit"
-            disabled={isLoading || !input.trim()}
-            className=" text-sm disabled:opacity-50"
+            disabled={isLoading || !input.trim() || !isPro}
+            className="text-sm disabled:opacity-50"
           >
             Skicka
           </Button>

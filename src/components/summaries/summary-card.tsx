@@ -19,20 +19,21 @@ const SummaryHeader = ({
   )
 }
 export default function SummaryCard({ summary }: { summary: any }) {
+  console.log('summary', summary)
   return (
     <div>
       <Card className="relative h-full">
         <div className="absolute top-2 right-2">
           <DeleteButton />
         </div>
-        <Link href={`summaries/${summary.id}`} className="block p-4 sm:p-6">
+        <Link href={`dashboard/${summary.id}`} className="block p-4 sm:p-6">
           <SummaryHeader
             fileUrl={summary.file}
-            title="coole"
+            title={summary.name}
             createdAt="test"
           />
           <p className="text-muted-foreground line-clamp-2 text-sm sm:text-base pl-2">
-            {summary.text}
+            {summary.name}
           </p>
           <p className="text-sm text-muted-foreground">2024</p>
           <div>
